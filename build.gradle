@@ -1,0 +1,73 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.7.10'
+    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
+}
+
+sourceCompatibility = 17
+targetCompatibility = 17
+
+archivesBaseName = project.name
+version = '1.0'
+group = 'com.example'
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+    runs {
+        client {
+            workingDirectory project.file('run')
+            args '--username', 'Dev'
+        }
+        server {
+            workingDirectory project.file('run')
+            args '--username', 'Dev'
+        }
+    }
+}
+
+mixin {
+    add(sourceSets.main, "emotesCompat.mixins.refmap.json")
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'forge'
+        url = 'https://maven.minecraftforge.net'
+    }
+    maven {
+        name = 'modmaven'
+        url = 'https://modmaven.dev/'
+    }
+    maven {
+        name = 'kotlin-for-forge'
+        url = 'https://thedarkcolour.github.io/KotlinForForge/'
+    }
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.7.10'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.2.19'
+    implementation fg.deobf("thedarkcolour:kotlinforforge:3.7.1")
+    implementation 'org.spongepowered:mixin:0.8.4'
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Specification-Title': project.name,
+                'Specification-Vendor': 'example.com',
+                'Specification-Version': '1', // We are version 1 of ourselves
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Implementation-Vendor': 'example.com',
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        )
+    }
+}

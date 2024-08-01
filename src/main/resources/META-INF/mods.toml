@@ -1,0 +1,7 @@
+modLoader="javafml"
+loaderVersion="[41,)"
+license="MIT"
+[[mods]]
+modId="emotescompat"
+version="${file.jarVersion}"
+displayName="Emotes Compat"
